@@ -4,7 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Files;
+import android.provider.MediaStore.MediaColumns;
 import android.text.TextUtils;
+import android.content.ContentUris;
 
 import androidx.annotation.NonNull;
 import androidx.loader.content.CursorLoader;
@@ -21,13 +24,17 @@ import java.util.List;
 public class LocalFileLoader extends CursorLoader {
     private static final String TAG = "LocalFileLoader";
 
-    private static final Uri FILE_URI = Uri.parse("content://media/external/file");
-    private static final String SELECTION = MediaStore.Files.FileColumns.DATA + " like ? or " + MediaStore.Files.FileColumns.DATA + " like ?";
+    private static final Uri FILE_URI = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q ?
+            MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL) :
+            Uri.parse("content://media/external/file");
+    private static final String SELECTION = MediaStore.Files.FileColumns.DISPLAY_NAME + " like ? or " + MediaStore.Files.FileColumns.DISPLAY_NAME + " like ?";
     private static final String[] SEARCH_TYPE = new String[]{"%.txt", "%.epub"};
     private static final String SORT_ORDER = MediaStore.Files.FileColumns.DISPLAY_NAME + " DESC";
     private static final String[] FILE_PROJECTION = {
-            MediaStore.Files.FileColumns.DATA,
-            MediaStore.Files.FileColumns.DISPLAY_NAME
+            MediaStore.Files.FileColumns._ID,
+            MediaStore.Files.FileColumns.DISPLAY_NAME,
+            MediaStore.Files.FileColumns.RELATIVE_PATH,
+            MediaStore.Files.FileColumns.SIZE
     };
 
     public LocalFileLoader(Context context) {
@@ -57,9 +64,23 @@ public class LocalFileLoader extends CursorLoader {
         // 重复使用Loader时，需要重置cursor的position；
         cursor.moveToPosition(-1);
         while (cursor.moveToNext()) {
-            String path;
-
-            path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+            String path = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                // 在Android Q及以上版本中，尝试获取文件路径
+                try {
+                    // 尝试通过_ID获取文件路径
+                    long id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID));
+                    Uri uri = ContentUris.withAppendedId(FILE_URI, id);
+                    // 尝试通过ContentResolver获取文件路径
+                    // 注意：在Android Q及以上版本中，这种方法可能会失败
+                    path = getPathFromUri(getContext(), uri);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // 在Android Q以下版本中，使用旧方法
+                path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+            }
             // 路径无效
             if (!TextUtils.isEmpty(path)) {
                 File file = new File(path);
@@ -71,6 +92,28 @@ public class LocalFileLoader extends CursorLoader {
         if (resultCallback != null) {
             resultCallback.onResultCallback(files);
         }
+    }
+
+    /**
+     * 从Uri获取文件路径
+     */
+    private String getPathFromUri(Context context, Uri uri) {
+        String path = null;
+        try {
+            // 尝试通过ContentResolver获取文件路径
+            String[] projection = {MediaStore.Files.FileColumns.DATA};
+            Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA);
+                    path = cursor.getString(columnIndex);
+                }
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return path;
     }
 
     /**

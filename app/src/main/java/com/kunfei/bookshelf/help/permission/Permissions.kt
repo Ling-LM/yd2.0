@@ -34,6 +34,11 @@ object Permissions {
 
     const val READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE"
     const val WRITE_EXTERNAL_STORAGE = "android.permission.WRITE_EXTERNAL_STORAGE"
+    
+    // Android 13+ storage permissions
+    const val READ_MEDIA_IMAGES = "android.permission.READ_MEDIA_IMAGES"
+    const val READ_MEDIA_VIDEO = "android.permission.READ_MEDIA_VIDEO"
+    const val READ_MEDIA_AUDIO = "android.permission.READ_MEDIA_AUDIO"
 
     object Group {
         val CALENDAR = arrayOf(READ_CALENDAR, WRITE_CALENDAR)
@@ -67,6 +72,9 @@ object Permissions {
         )
 
         val STORAGE = arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+        
+        // Android 13+ storage permissions
+        val MEDIA = arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_AUDIO)
     }
 
 }
