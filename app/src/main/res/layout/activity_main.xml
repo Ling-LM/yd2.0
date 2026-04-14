@@ -11,7 +11,8 @@
         android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:elevation="16dp">
 
         <include
             android:id="@+id/main_view"
@@ -19,11 +20,17 @@
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigation_view"
-            android:layout_width="230dp"
+            android:layout_width="280dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@color/background_menu"
-            app:menu="@menu/menu_main_drawer" />
+            android:background="@drawable/md3_navigation_drawer_background"
+            android:elevation="8dp"
+            app:headerLayout="@layout/navigation_header"
+            app:itemBackground="@drawable/md3_navigation_item_background"
+            app:itemIconTint="@color/selector_menu_text"
+            app:itemTextColor="@color/selector_menu_text"
+            app:menu="@menu/menu_main_drawer"
+            app:theme="@style/MD3NavigationView" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </LinearLayout>

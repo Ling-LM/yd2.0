@@ -62,7 +62,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="overlapAnchor">false</item>
-        <item name="colorAccent">@color/md_grey_900</item>
+        <item name="colorAccent">@color/md_grey_90</item>
     </style>
 
     <style name="NoPaddingToolbar" parent="Base.Widget.AppCompat.Toolbar">
@@ -82,10 +82,23 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay.Light" parent="ThemeOverlay.AppCompat.Light">
-        <item name="colorAccent">@color/md_grey_900</item>
+        <item name="colorAccent">@color/md_grey_90</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay.Dark" parent="ThemeOverlay.AppCompat.Dark">
         <item name="colorAccent">@color/md_grey_100</item>
     </style>
+
+    <!-- Material Design 3 - Navigation View Styles -->
+    <style name="MD3NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="android:listPreferredItemHeight">56dp</item>
+        <item name="android:listPreferredItemPaddingLeft">16dp</item>
+        <item name="android:listPreferredItemPaddingStart">16dp</item>
+        <item name="android:listPreferredItemPaddingRight">16dp</item>
+        <item name="android:listPreferredItemPaddingEnd">16dp</item>
+        <item name="itemPaddingTop">12dp</item>
+        <item name="itemPaddingBottom">12dp</item>
+        <item name="itemIconPadding">16dp</item>
+    </style>
+
 </resources>

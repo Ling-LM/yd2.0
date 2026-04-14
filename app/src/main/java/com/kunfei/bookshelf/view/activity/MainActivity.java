@@ -501,13 +501,9 @@ public class MainActivity extends BaseTabActivity<MainContract.Presenter> implem
      * 侧边栏按钮
      */
     private void setUpNavigationView() {
-        binding.navigationView.setBackgroundColor(ThemeStore.backgroundColor(this));
-        NavigationViewUtil.setItemIconColors(binding.navigationView, getResources().getColor(R.color.tv_text_default), ThemeStore.accentColor(this));
         NavigationViewUtil.disableScrollbar(binding.navigationView);
-        @SuppressLint("InflateParams") View headerView = LayoutInflater.from(this).inflate(R.layout.navigation_header, null);
+        View headerView = binding.navigationView.getHeaderView(0);
         AppCompatImageView imageView = headerView.findViewById(R.id.iv_read);
-        imageView.setColorFilter(ThemeStore.accentColor(this));
-        binding.navigationView.addHeaderView(headerView);
         Menu drawerMenu = binding.navigationView.getMenu();
         vwNightTheme = drawerMenu.findItem(R.id.action_theme).getActionView().findViewById(R.id.iv_theme_day_night);
         upThemeVw();
