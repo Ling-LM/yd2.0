@@ -10,6 +10,60 @@
     <color name="colorPrimaryDark">@color/md_grey_900</color>
     <color name="colorAccent">@color/md_grey_100</color>
 
+    <!-- Material Design 3 - Night Mode Colors -->
+    <!-- Primary Color Family - Blue Purple (#6750A4) Variant -->
+    <color name="md3_primary">#D0BCFF</color>
+    <color name="md3_on_primary">#381E72</color>
+    <color name="md3_primary_container">#4F378B</color>
+    <color name="md3_on_primary_container">#EADDFF</color>
+
+    <!-- Secondary Color Family - Orange (#FE7B49) Variant -->
+    <color name="md3_secondary">#FFB59C</color>
+    <color name="md3_on_secondary">#662200</color>
+    <color name="md3_secondary_container">#8D3613</color>
+    <color name="md3_on_secondary_container">#FFDBCF</color>
+
+    <!-- Tertiary Color Family - Green (#609B6C) Variant -->
+    <color name="md3_tertiary">#72E087</color>
+    <color name="md3_on_tertiary">#003910</color>
+    <color name="md3_tertiary_container">#005218</color>
+    <color name="md3_on_tertiary_container">#92D4A0</color>
+
+    <!-- Error Color Family -->
+    <color name="md3_error">#FFB4AB</color>
+    <color name="md3_on_error">#690005</color>
+    <color name="md3_error_container">#93000A</color>
+    <color name="md3_on_error_container">#FFDAD6</color>
+
+    <!-- Surface Colors -->
+    <color name="md3_surface">#1C1B1F</color>
+    <color name="md3_on_surface">#E6E1E5</color>
+    <color name="md3_surface_variant">#49454F</color>
+    <color name="md3_on_surface_variant">#CAC4D0</color>
+
+    <!-- Background Colors -->
+    <color name="md3_background">#1C1B1F</color>
+    <color name="md3_on_background">#E6E1E5</color>
+
+    <!-- Outline Colors -->
+    <color name="md3_outline">#938F99</color>
+    <color name="md3_outline_variant">#49454F</color>
+
+    <!-- Scrim and Inverse Colors -->
+    <color name="md3_scrim">#000000</color>
+    <color name="md3_inverse_surface">#E6E1E5</color>
+    <color name="md3_inverse_on_surface">#313033</color>
+    <color name="md3_inverse_primary">#6750A4</color>
+
+    <!-- Elevation Surface Colors -->
+    <color name="md3_surface_dim">#141218</color>
+    <color name="md3_surface_bright">#3B383E</color>
+    <color name="md3_surface_container_lowest">#0F0D13</color>
+    <color name="md3_surface_container_low">#1D1B20</color>
+    <color name="md3_surface_container">#211F26</color>
+    <color name="md3_surface_container_high">#2B2930</color>
+    <color name="md3_surface_container_highest">#36343B</color>
+
     <color name="transparent30">#30ffffff</color>
 
     <color name="bg_divider_line">#363636</color>

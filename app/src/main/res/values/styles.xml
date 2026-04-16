@@ -88,4 +88,29 @@
     <style name="AppTheme.AppBarOverlay.Dark" parent="ThemeOverlay.AppCompat.Dark">
         <item name="colorAccent">@color/md_grey_100</item>
     </style>
+
+    <!-- Material Design 3 - Navigation View Styles -->
+    <style name="MD3NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="android:listPreferredItemHeight">48dp</item>
+        <item name="android:listPreferredItemPaddingLeft">16dp</item>
+        <item name="android:listPreferredItemPaddingStart">16dp</item>
+        <item name="android:listPreferredItemPaddingRight">16dp</item>
+        <item name="android:listPreferredItemPaddingEnd">16dp</item>
+        <item name="itemPaddingTop">8dp</item>
+        <item name="itemPaddingBottom">8dp</item>
+        <item name="itemIconPadding">16dp</item>
+        <item name="itemIconSize">24dp</item>
+        <item name="android:itemTextAppearance">@style/MD3MenuItemTextAppearance</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:dividerHeight">16dp</item>
+        <item name="android:divider">@android:color/transparent</item>
+    </style>
+    
+    <!-- Material Design 3 - Menu Item Text Appearance -->
+    <style name="MD3MenuItemTextAppearance" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/selector_menu_text</item>
+    </style>
+
 </resources>

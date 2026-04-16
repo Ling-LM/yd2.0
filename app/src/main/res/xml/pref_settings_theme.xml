@@ -40,6 +40,11 @@
         android:summary="@string/restore_default_theme"
         android:title="@string/default_theme" />
 
+    <Preference
+        android:key="md3BeautifyTheme"
+        android:summary="@string/restore_md3_theme"
+        android:title="@string/md3_beautify_theme" />
+
     <com.kunfei.bookshelf.widget.prefs.ATEPreferenceCategory android:title="白天">
 
         <com.jaredrummler.android.colorpicker.ColorPreference

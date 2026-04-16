@@ -166,6 +166,26 @@ public class ThemeSettingsFragment extends PreferenceFragment implements SharedP
                     })
                     .show();
             ATH.setAlertDialogTint(alertDialog);
+        } else if (Objects.equals(preference.getKey(), "md3BeautifyTheme")) {
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.md3_beautify_theme)
+                    .setMessage("是否确认应用MD3美化主题？")
+                    .setPositiveButton(R.string.ok, (dialog, which) -> {
+                        settingActivity.preferences.edit()
+                                .putInt("colorPrimary", settingActivity.getResources().getColor(R.color.md3_primary))
+                                .putInt("colorAccent", settingActivity.getResources().getColor(R.color.md3_secondary))
+                                .putInt("colorBackground", settingActivity.getResources().getColor(R.color.md3_background))
+                                .putInt("colorPrimaryNight", settingActivity.getResources().getColor(R.color.md3_surface))
+                                .putInt("colorAccentNight", settingActivity.getResources().getColor(R.color.md3_primary))
+                                .putInt("colorBackgroundNight", settingActivity.getResources().getColor(R.color.md3_background))
+                                .apply();
+                        MApplication.getInstance().upThemeStore();
+                        RxBus.get().post(RxBusTag.RECREATE, true);
+                    })
+                    .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                    })
+                    .show();
+            ATH.setAlertDialogTint(alertDialog);
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }

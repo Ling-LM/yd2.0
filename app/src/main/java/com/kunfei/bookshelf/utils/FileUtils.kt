@@ -120,19 +120,42 @@ object FileUtils {
     fun getStorageData(pContext: Context): ArrayList<String>? {
         val storageManager = pContext.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         try {
-            val getVolumeList = storageManager.javaClass.getMethod("getVolumeList")
-            val storageValumeClazz = Class.forName("android.os.storage.StorageVolume")
-            val getPath = storageValumeClazz.getMethod("getPath")
-            val invokeVolumeList = getVolumeList.invoke(storageManager)
-            val length = java.lang.reflect.Array.getLength(invokeVolumeList)
-            val list = ArrayList<String>()
-            for (i in 0 until length) {
-                val storageValume =
-                    java.lang.reflect.Array.get(invokeVolumeList, i) //得到StorageVolume对象
-                val path = getPath.invoke(storageValume) as String
-                list.add(path)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                // 使用新的StorageVolume API
+                val volumes = storageManager.storageVolumes
+                val list = ArrayList<String>()
+                for (volume in volumes) {
+                    if (volume.isPrimary) {
+                        // 获取主存储路径
+                        val path = volume.directory?.absolutePath
+                        if (path != null) {
+                            list.add(path)
+                        }
+                    } else if (volume.isRemovable) {
+                        // 获取可移动存储路径
+                        val path = volume.directory?.absolutePath
+                        if (path != null) {
+                            list.add(path)
+                        }
+                    }
+                }
+                return list
+            } else {
+                // 旧的反射方式
+                val getVolumeList = storageManager.javaClass.getMethod("getVolumeList")
+                val storageValumeClazz = Class.forName("android.os.storage.StorageVolume")
+                val getPath = storageValumeClazz.getMethod("getPath")
+                val invokeVolumeList = getVolumeList.invoke(storageManager)
+                val length = java.lang.reflect.Array.getLength(invokeVolumeList)
+                val list = ArrayList<String>()
+                for (i in 0 until length) {
+                    val storageValume = 
+                        java.lang.reflect.Array.get(invokeVolumeList, i) //得到StorageVolume对象
+                    val path = getPath.invoke(storageValume) as String
+                    list.add(path)
+                }
+                return list
             }
-            return list
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }

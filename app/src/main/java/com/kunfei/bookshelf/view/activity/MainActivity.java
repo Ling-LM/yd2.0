@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 import com.hwangjr.rxbus.RxBus;
 import com.kunfei.bookshelf.BuildConfig;
@@ -72,7 +73,7 @@ public class MainActivity extends BaseTabActivity<MainContract.Presenter> implem
     private final int REQUEST_QR = 202;
 
     private ActivityMainBinding binding;
-    private AppCompatImageView vwNightTheme;
+    private MaterialButton vwNightTheme;
     private int group;
     private ActionBarDrawerToggle mDrawerToggle;
     private MoDialogHUD moDialogHUD;
@@ -501,13 +502,9 @@ public class MainActivity extends BaseTabActivity<MainContract.Presenter> implem
      * 侧边栏按钮
      */
     private void setUpNavigationView() {
-        binding.navigationView.setBackgroundColor(ThemeStore.backgroundColor(this));
-        NavigationViewUtil.setItemIconColors(binding.navigationView, getResources().getColor(R.color.tv_text_default), ThemeStore.accentColor(this));
         NavigationViewUtil.disableScrollbar(binding.navigationView);
-        @SuppressLint("InflateParams") View headerView = LayoutInflater.from(this).inflate(R.layout.navigation_header, null);
+        View headerView = binding.navigationView.getHeaderView(0);
         AppCompatImageView imageView = headerView.findViewById(R.id.iv_read);
-        imageView.setColorFilter(ThemeStore.accentColor(this));
-        binding.navigationView.addHeaderView(headerView);
         Menu drawerMenu = binding.navigationView.getMenu();
         vwNightTheme = drawerMenu.findItem(R.id.action_theme).getActionView().findViewById(R.id.iv_theme_day_night);
         upThemeVw();
@@ -543,13 +540,16 @@ public class MainActivity extends BaseTabActivity<MainContract.Presenter> implem
      */
     private void upThemeVw() {
         if (isNightTheme()) {
-            vwNightTheme.setImageResource(R.drawable.ic_daytime);
+            vwNightTheme.setIconResource(R.drawable.ic_daytime);
             vwNightTheme.setContentDescription(getString(R.string.click_to_day));
         } else {
-            vwNightTheme.setImageResource(R.drawable.ic_brightness);
+            vwNightTheme.setIconResource(R.drawable.ic_brightness);
             vwNightTheme.setContentDescription(getString(R.string.click_to_night));
         }
-        vwNightTheme.getDrawable().mutate().setColorFilter(ThemeStore.accentColor(this), PorterDuff.Mode.SRC_ATOP);
+        vwNightTheme.setIconTint(new ColorStateList(
+                new int[][]{new int[]{}}, 
+                new int[]{ThemeStore.accentColor(this)}
+        ));
     }
 
     private void selectBookshelfLayout() {

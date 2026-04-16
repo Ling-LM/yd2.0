@@ -370,6 +370,8 @@
     <string name="theme">主题</string>
     <string name="default_theme">默认主题</string>
     <string name="restore_default_theme">恢复主题为默认配色</string>
+    <string name="md3_beautify_theme">MD3美化</string>
+    <string name="restore_md3_theme">应用MD3美化主题</string>
     <string name="join_qq_group">加入QQ群</string>
     <string name="read_file_error">文件读取失败</string>
     <string name="bg_image_per">获取背景图片需存储权限</string>

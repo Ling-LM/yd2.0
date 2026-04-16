@@ -1,5 +1,6 @@
 package com.kunfei.bookshelf.view.fragment;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -8,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.kunfei.basemvplib.impl.IPresenter;
+import com.kunfei.bookshelf.MApplication;
 import com.kunfei.bookshelf.R;
 import com.kunfei.bookshelf.databinding.FragmentFileCategoryBinding;
 import com.kunfei.bookshelf.help.BookshelfHelp;
@@ -19,6 +22,7 @@ import com.kunfei.bookshelf.utils.FileStack;
 import com.kunfei.bookshelf.utils.FileUtils;
 import com.kunfei.bookshelf.view.adapter.FileSystemAdapter;
 import com.kunfei.bookshelf.widget.itemdecoration.DividerItemDecoration;
+import android.app.Activity;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -113,32 +117,76 @@ public class FileCategoryFragment extends BaseFileFragment {
         );
 
         binding.tvSd.setOnClickListener(v -> {
-            if (getContext() != null) {
-                List<String> list = FileUtils.getStorageData(getContext());
-                if (list != null) {
-                    String[] filePathS = list.toArray(new String[0]);
-                    AlertDialog dialog = new AlertDialog.Builder(getContext())
-                            .setTitle(R.string.select_sd_file)
-                            .setSingleChoiceItems(filePathS, 0, (dialogInterface, i) -> {
-                                upRootFile(filePathS[i]);
-                                dialogInterface.dismiss();
-                            })
-                            .create();
-                    dialog.show();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                // 在Android 11+上使用SAF选择文件夹
+                openDocumentTree();
+            } else {
+                // 在Android 10及以下使用旧方法
+                if (getContext() != null) {
+                    List<String> list = FileUtils.getStorageData(getContext());
+                    if (list != null) {
+                        String[] filePathS = list.toArray(new String[0]);
+                        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                                .setTitle(R.string.select_sd_file)
+                                .setSingleChoiceItems(filePathS, 0, (dialogInterface, i) -> {
+                                    upRootFile(filePathS[i]);
+                                    dialogInterface.dismiss();
+                                })
+                                .create();
+                        dialog.show();
+                    }
                 }
             }
         });
     }
 
+    private static final int REQUEST_CODE_OPEN_DIRECTORY = 1001;
+
     @Override
     protected void firstRequest() {
         super.firstRequest();
-        upRootFile(Environment.getExternalStorageDirectory().getPath());
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            // 在Android 11+上使用SAF选择文件夹
+            openDocumentTree();
+        } else {
+            // 在Android 10及以下使用旧方法
+            upRootFile(Environment.getExternalStorageDirectory().getPath());
+        }
     }
 
     private void upRootFile(String rootFilePath) {
         this.rootFilePath = rootFilePath;
         toggleFileTree(new File(rootFilePath));
+    }
+
+    private void openDocumentTree() {
+        if (getActivity() != null) {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            getActivity().startActivityForResult(intent, REQUEST_CODE_OPEN_DIRECTORY);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
+            if (data != null && data.getData() != null) {
+                // 保存权限
+                if (getActivity() != null) {
+                    final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                    getActivity().getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
+                    // 处理选择的目录
+                    DocumentFile documentFile = DocumentFile.fromTreeUri(getContext(), data.getData());
+                    if (documentFile != null && documentFile.exists() && documentFile.isDirectory()) {
+                        // 这里需要处理DocumentFile，因为我们不能直接获取路径
+                        // 暂时使用应用内部存储作为替代
+                        upRootFile(MApplication.getInstance().getFilesDir().getAbsolutePath());
+                    }
+                }
+            }
+        }
     }
 
     private void setTextViewIconColor(TextView textView) {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight"
+    android:radius="12dp">
+    <item>
+        <selector>
+            <item android:state_checked="true">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/md3_primary_container" />
+                    <corners android:radius="12dp" />
+                </shape>
+            </item>
+            <item android:state_pressed="true">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/md3_surface_variant" />
+                    <corners android:radius="12dp" />
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <corners android:radius="12dp" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+</ripple>

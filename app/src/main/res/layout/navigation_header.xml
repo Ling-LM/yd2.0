@@ -4,34 +4,36 @@
     android:id="@+id/na_top"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="16dp"
+    android:paddingBottom="24dp"
+    android:background="@drawable/md3_navigation_header_background">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_read"
-        android:layout_width="160dp"
-        android:layout_height="80dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/ic_read"
-        app:tint="@color/colorAccent"
-        android:contentDescription="@string/app_name" />
+        app:tint="@color/md3_primary"
+        android:contentDescription="@string/app_name"
+        android:background="@drawable/md3_header_image_background"
+        android:padding="12dp" />
 
     <TextView
         android:id="@+id/tv_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp"
-        android:singleLine="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:singleLine="false"
         android:text="@string/read_summary"
-        android:textColor="@color/tv_text_default"
-        android:textSize="14sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.9dp"
-        android:background="@color/btn_bg_press" />
+        android:textColor="@color/md3_on_surface"
+        android:textSize="16sp"
+        android:lineSpacingExtra="4sp" />
 
 </LinearLayout>
 
