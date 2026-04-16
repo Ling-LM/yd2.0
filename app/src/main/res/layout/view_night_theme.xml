@@ -14,9 +14,7 @@
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
-        app:shapeAppearance="@style/Theme.App.ShapeAppearance.MediumComponent"
         app:cornerRadius="24dp"
-        app:iconGravity="center"
         app:iconSize="24dp"
         app:backgroundTint="?attr/colorSurface"
         app:rippleColor="?attr/colorPrimary" />
